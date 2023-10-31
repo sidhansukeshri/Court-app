@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Court App Registration</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        /* Override the height for .select2-container .select2-selection--single */
+        .select2-container .select2-selection--single {
+            height: 35px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #role {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        /* Remove transitions and styling from the Role label */
+        #role + .select2-container .select2-selection--single {
+            height:
+             35px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>User Registration</h2>
+        <form id="registration-form" method="POST">
+            <!-- Court Name -->
+            <div class="form-group">
+                <label for="court_name">Select Court</label>
+                <select class="form-control select2" id="court_name" name="court_name" required>
+                    <option>Select</option>
+                    <!-- Options will be dynamically loaded by JavaScript -->
+                </select>
+            </div>
+            
+            <!-- Staff Name -->
+            <div class="form-group">
+                <label for="staff_name">Staff Name</label>
+                <select class="form-control select2" id="staff_name" name="staff_name" required>
+                    <option>Select</option>
+                    <!-- Options will be dynamically loaded by JavaScript -->
+                </select>
+            </div>
+
+            <!-- Username -->
+            <div class="form-group">
+                <label for="username" class="input-label">Username</label>
+                <input type="text" name="username" id="username" class="form-input" required autocomplete="username">
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password" class="input-label">Password</label>
+                <input type="password" id="password" name="password" class="form-input" required>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="form-group">
+                <label for="confirm_password" class="input-label">Confirm Password</label>
+                <input type="password" id="confirm_password" name="confirm_password" class="form-input" required>
+            </div>
+
+            <!-- Role -->
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select id="role" name="role" required>
+                    <option>Select</option>
+                    <!-- Options will be dynamically loaded by JavaScript -->
+                </select>
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="form-group">
+                <button type="submit">Register</button>
+            </div>
+            
+            <!-- Error Messages -->
+            <div id="username-error" class="error-message"></div>
+            <div id="password-error" class="error-message"></div>
+            <div id="form-messages" class="error-message"></div>
+        </form>
+        <p>Already have an account? <a href="login.html">Click here to log in.</a></p>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const roleInput = document.getElementById("role");
+    
+            // Function to fetch role names from the server
+            async function fetchRoleNames(query) {
+                const response = await fetch(`search_role.php?q=${query}`);
+                const data = await response.json();
+                return data;
+            }
+    
+            // Fetch and display role names initially
+            fetchRoleNames('').then(data => {
+                data.forEach(item => {
+                    const option = document.createElement("option");
+                    option.value = item.value;
+                    option.text = item.display;
+                    roleInput.appendChild(option);
+                });
+            });
+        });
+    </script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script src="script.js"></script>
+    
+</body>
+</html>

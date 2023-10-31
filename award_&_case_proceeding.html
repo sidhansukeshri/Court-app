@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Award and Case Proceeding Entry Form</title>
+        <style>
+            /* Add your CSS styles here */
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+    
+            th, td {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+    
+            tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+        </style>
+    </head>
+<body>
+    <h1>Award and Case Proceeding Entry Form</h1>
+    <form id="awardForm" action="submit.php" method="post">
+        <div>
+            <h2>Court Information</h2>
+            <label for="courtName">Court Name</label>
+            <select id="courtName" name="courtName">
+                <!-- Populate options from your database -->
+                <option value="1">Court 1</option>
+                <option value="2">Court 2</option>
+                <!-- Add more options as needed -->
+            </select>
+        </div>
+
+        <div>
+            <h2>Number Type</h2>
+            <label for="caseNumberRadio">Case Number</label>
+            <input type="radio" id="caseNumberRadio" name="numberType" value="caseNumber">
+            <label for="fillingNumberRadio">Filling Number</label>
+            <input type="radio" id="fillingNumberRadio" name="numberType" value="fillingNumber">
+        </div>
+
+        <div id="caseNumberFields" style="display: none;">
+            <label for="caseType">Case Type</label>
+            <input type="text" id="caseType" name="caseType">
+            <label for="caseNo">Case No.</label>
+            <input type="text" id="caseNo" name="caseNo">
+            <label for="caseYear">Case Year</label>
+            <input type="text" id="caseYear" name="caseYear">
+        </div>
+
+        <div id="fillingNumberFields" style="display: none;">
+            <label for="fillingCaseType">Filling Case Type</label>
+            <input type="text" id="fillingCaseType" name="fillingCaseType">
+            <label for="fillingNumber">Filling Number</label>
+            <input type="text" id="fillingNumber" name="fillingNumber">
+            <label for="fillingYear">Filling Year</label>
+            <input type="text" id="fillingYear" name="fillingYear">
+        </div>
+
+        <label for="caseDisposalDate">Case Disposal / Award Date</label>
+        <input type="datetime-local" id="caseDisposalDate" name="caseDisposalDate">
+
+        <div>
+            <h2>Award Details / Proceeding Details:</h2>
+            <table id="awardDetailsTable">
+                <thead>
+                    <tr>
+                        <th>Respondent Name</th>
+                        <th>Award Amount Needs to be Deposit</th>
+                        <th>Add Row</th>
+                        <th>Delete Row</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" name="respondentName[]" required></td>
+                        <td><input type="number" name="awardAmount[]" required></td>
+                        <td><button type="button" class="addRowAward">Add Row</button></td>
+                        <td><button type="button" class="deleteRowAward">Delete Row</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div>
+            <h2>Petitioner Details:</h2>
+            <table id="petitionerDetailsTable">
+                <thead>
+                    <tr>
+                        <th>Petitioner Name</th>
+                        <th>Award Amount</th>
+                        <th>Age</th>
+                        <th>DOB</th>
+                        <th>Bank Name</th>
+                        <th>Bank IFS Code</th>
+                        <th>Bank Account Number</th>
+                        <th>Award Nature</th>
+                        <th>Details</th>
+                        <th>Add Row</th>
+                        <th>Delete Row</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" name="petitionerName[]" required></td>
+                        <td><input type="number" name="petitionerAward[]" required></td>
+                        <td><input type="number" name="petitionerAge[]"></td>
+                        <td><input type="date" name="petitionerDOB[]"></td>
+                        <td><input type="text" name="bankName[]"></td>
+                        <td><input type="text" name="bankIFS[]"></td>
+                        <td><input type="text" name="bankAccount[]"></td>
+                        <td><input type="text" name="awardNature[]"></td>
+                        <td><button type="button" class="detailsButton">Details</button></td>
+                        <td><button type="button" class="addRowPetitioner">Add Row</button></td>
+                        <td><button type="button" class="deleteRowPetitioner">Delete Row</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div>
+            <h2>Petitioner wise award details:</h2>
+            <table id="petitionerWiseAwardTable">
+                <thead>
+                    <tr>
+                        <th>Petitioner</th>
+                        <th>Amount</th>
+                        <th>Date of Maturity</th>
+                        <th>ROI/Year</th>
+                        <th>Interest Calculation from date</th>
+                        <th>Add Row</th>
+                        <th>Delete Row</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" name="petitionerWiseName[]"></td>
+                        <td><input type="number" name="petitionerWiseAmount[]"></td>
+                        <td><input type="date" name="petitionerWiseMaturityDate[]"></td>
+                        <td><input type="number" name="petitionerWiseROI[]"></td>
+                        <td><input type="date" name="petitionerWiseCalculationDate[]"></td>
+                        <td><button type="button" class="addRowWiseAward">Add Row</button></td>
+                        <td><button type="button" class="deleteRowWiseAward">Delete Row</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <button type="submit">Submit</button>
+        <button type="button">Cancel</button>
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // JavaScript to show/hide fields based on radio button selection
+        const caseNumberRadio = document.getElementById('caseNumberRadio');
+        const fillingNumberRadio = document.getElementById('fillingNumberRadio');
+        const caseNumberFields = document.getElementById('caseNumberFields');
+        const fillingNumberFields = document.getElementById('fillingNumberFields');
+
+        caseNumberRadio.addEventListener('change', function() {
+            if (caseNumberRadio.checked) {
+                caseNumberFields.style.display = 'block';
+                fillingNumberFields.style.display = 'none';
+            }
+        });
+
+        fillingNumberRadio.addEventListener('change', function() {
+            if (fillingNumberRadio.checked) {
+                fillingNumberFields.style.display = 'block';
+                caseNumberFields.style.display = 'none';
+            }
+        });
+        // JavaScript to add and remove rows for the various tables and to display the modal for "Details"
+        $(document).ready(function () {
+            // Add row for Award Details
+            $(".addRowAward").click(function () {
+                $("#awardDetailsTable tbody").append('<tr><td><input type="text" name="respondentName[]" required></td><td><input type="number" name="awardAmount[]" required></td><td><button type="button" class="addRowAward">Add Row</button></td><td><button type="button" class="deleteRowAward">Delete Row</button></td></tr>');
+            });
+
+            // Remove row for Award Details
+            $("#awardDetailsTable").on("click", ".deleteRowAward", function () {
+                $(this).closest("tr").remove();
+            });
+
+            // Show Details Modal
+            $("#petitionerDetailsTable").on("click", ".detailsButton", function () {
+                // You can display a modal here to enter details for this row.
+                // Example: $("#detailsModal").show();
+            });
+
+            // Add row for Petitioner Details
+            $(".addRowPetitioner").click(function () {
+                $("#petitionerDetailsTable tbody").append('<tr><td><input type="text" name="petitionerName[]" required></td><td><input type="number" name="petitionerAward[]" required></td><td><input type="number" name="petitionerAge[]"></td><td><input type="date" name="petitionerDOB[]"></td><td><input type="text" name="bankName[]"></td><td><input type="text" name="bankIFS[]"></td><td><input type="text" name="bankAccount[]"></td><td><input type="text" name="awardNature[]"></td><td><button type="button" class="detailsButton">Details</button></td><td><button type="button" class="addRowPetitioner">Add Row</button></td><td><button type="button" class="deleteRowPetitioner">Delete Row</button></td></tr>');
+            });
+
+            // Remove row for Petitioner Details
+            $("#petitionerDetailsTable").on("click", ".deleteRowPetitioner", function () {
+                $(this).closest("tr").remove();
+            });
+
+            // Add row for Petitioner Wise Award Details
+            $(".addRowWiseAward").click(function () {
+                $("#petitionerWiseAwardTable tbody").append('<tr><td><input type="text" name="petitionerWiseName[]"></td><td><input type="number" name="petitionerWiseAmount[]"></td><td><input type="date" name="petitionerWiseMaturityDate[]"></td><td><input type="number" name="petitionerWiseROI[]"></td><td><input type="date" name="petitionerWiseCalculationDate[]"></td><td><button type="button" class="addRowWiseAward">Add Row</button></td><td><button type="button" class="deleteRowWiseAward">Delete Row</button></td></tr>');
+            });
+
+            // Remove row for Petitioner Wise Award Details
+            $("#petitionerWiseAwardTable").on("click", ".deleteRowWiseAward", function () {
+                $(this).closest("tr").remove();
+            });
+
+            // Show/hide modal for Details (You need to implement this part)
+            // $(".detailsButton").click(function () {
+            //     // Show the modal for Details
+            // });
+        });
+    </script>
+</body>
+</html>

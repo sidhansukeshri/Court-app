@@ -1,0 +1,125 @@
+/* Reset default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Set a background color for the whole page */
+body {
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
+}
+
+/* Center the registration form */
+.container {
+    width: 80%;
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Form styling */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Remove transitions and styling from the labels */
+.input-label {
+    display: block;
+    font-size: 14px;
+    margin-top: 10px;
+    color: #333;
+}
+
+/* Dropdown styling for Court Name and Staff Name */
+.custom-dropdown .dropdown-content.active, .staff-dropdown .staff-dropdown-content.active {
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 0;
+    position: absolute;
+    background-color: #fff;
+}
+
+.custom-dropdown .dropdown-item, .staff-dropdown .dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc; /* Add lines between items */
+}
+
+.custom-dropdown .dropdown-item:last-child, .staff-dropdown .dropdown-item:last-child {
+    border-bottom: none; /* Remove line for the last item */
+}
+
+.custom-dropdown .dropdown-item:hover, .staff-dropdown .dropdown-item:hover {
+    background-color: #f2f2f2;
+}
+
+/* Error message styling */
+.error-message {
+    color: #ff0000;
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+/* Button styling */
+button {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Link styling */
+a {
+    text-decoration: none;
+    color: #007BFF;
+}
+
+/* Adjust form elements for small screens */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+}
+
+/* Make Court Name, Staff Name, and Confirm Password boxes the same as Username box */
+#court_name, #staff_name, #confirm_password {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+input, select {
+    height: 35px;
+
+}
+
