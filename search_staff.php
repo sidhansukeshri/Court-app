@@ -5,7 +5,7 @@ $host = "localhost";
 $port = "5432";
 $dbname = "courtapp";
 $db_username = "postgres";
-$db_password = "Your_password"; //Your_password
+$db_password = "Spysid@#69";
 
 if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["q"])) {
     try {
