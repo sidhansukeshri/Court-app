@@ -27,48 +27,62 @@
     </div>
 
     <script>
-        const inputLabels = document.querySelectorAll(".input-label");
-        const inputs = document.querySelectorAll("input");
-        const loginMessages = document.getElementById("login-messages");
-
-        // Add event listeners for input fields
-        inputs.forEach((input, index) => {
-            input.addEventListener("focus", () => {
-                inputLabels[index].classList.add("active");
+        document.addEventListener("DOMContentLoaded", function () {
+            const inputLabels = document.querySelectorAll(".input-label");
+            const inputs = document.querySelectorAll("input");
+            const loginMessages = document.getElementById("login-messages");
+    
+            // Add event listeners for input fields
+            inputs.forEach((input, index) => {
+                input.addEventListener("focus", () => {
+                    inputLabels[index].classList.add("active");
+                });
+    
+                input.addEventListener("blur", () => {
+                    if (input.value === "") {
+                        inputLabels[index].classList.remove("active");
+                    }
+                });
             });
-
-            input.addEventListener("blur", () => {
-                if (input.value === "") {
-                    inputLabels[index].classList.remove("active");
-                }
-            });
-        });
-
-        // Add event listener for form submission
-        document.getElementById("login-form").addEventListener("submit", function(e) {
-            e.preventDefault(); // Prevent the form from submitting the traditional way
-            
-            // Get login credentials
-            const loginUsername = document.getElementById("login_username").value;
-            const loginPassword = document.getElementById("login_password").value;
-
-            // Send a POST request to the server
-            fetch("login.php", {
-                method: "POST",
-                body: JSON.stringify({ loginUsername, loginPassword }),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Login successful, display a success message
-                    loginMessages.textContent = "You are now logged in.";
-                } else {
-                    // Display error message
-                    loginMessages.textContent = "Incorrect username or password.";
-                }
+    
+            // Add event listener for form submission
+            document.getElementById("login-form").addEventListener("submit", function (e) {
+                e.preventDefault(); // Prevent the form from submitting the traditional way
+    
+                // Get login credentials
+                const loginUsername = document.getElementById("login_username").value;
+                const loginPassword = document.getElementById("login_password").value;
+    
+                // Send a POST request to the server
+                fetch("login.php", {
+                    method: "POST",
+                    body: JSON.stringify({ loginUsername, loginPassword }),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                    .then(async (response) => {
+                        const contentType = response.headers.get("content-type");
+                        if (contentType && contentType.indexOf("application/json") !== -1) {
+                            return response.json();
+                        } else {
+                            const text = await response.text();
+                            throw new Error(text || "An error occurred during login.");
+                        }
+                    })
+                    .then((data) => {
+                        if (data.success) {
+                            // Login successful, display a success message
+                            loginMessages.textContent = "You are now logged in.";
+                        } else {
+                            // Display error message
+                            loginMessages.textContent = data.message || "An error occurred during login.";
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error during login:", error);
+                        loginMessages.textContent = error.message || "An error occurred during login.";
+                    });
             });
         });
     </script>
