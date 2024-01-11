@@ -5,7 +5,7 @@ $host = "localhost";
 $port = "5432";
 $dbname = "courtapp"; 
 $db_username = "postgres";
-$db_password = "Your_password"; //Your_password
+$db_password = "Spysid@#69";
 
 $conn = new PDO("pgsql:host=$host;port=$port;dbname=$dbname;user=$db_username;password=$db_password");
 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
