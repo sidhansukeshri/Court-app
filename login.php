@@ -1,13 +1,10 @@
 <?php
-// Set the response content type to JSON
-header('Content-Type: application/json');
-
 // Database connection details
 $host = "localhost";
 $port = "5432";
 $dbname = "courtapp";
 $db_username = "postgres";
-$db_password = "Your_password"; //Your_password
+$db_password = "Spysid@#69";
 
 try {
     // Create a PDO database connection
@@ -17,6 +14,15 @@ try {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Decode the JSON data sent in the request
         $data = json_decode(file_get_contents("php://input"));
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            echo json_encode([
+                "success" => false,
+                "message" => "JSON decoding error: " . json_last_error_msg(),
+            ]);
+            exit();
+        }
+
         $loginUsername = $data->loginUsername;
         $loginPassword = $data->loginPassword;
 
@@ -32,20 +38,56 @@ try {
 
             if ($user_status === 'A' && password_verify($loginPassword, $hashed_password)) {
                 // Password is correct, and the user status is 'A', login successful
+                
+                // Insert a record into the userlog_t table
+                $insert_log_sql = "INSERT INTO userlog_t (user_name, login_ip, login_time, role_id) VALUES (?, ?, CURRENT_TIMESTAMP, ?)";
+                $stmt_insert_log = $conn->prepare($insert_log_sql);
+                $stmt_insert_log->execute([$loginUsername, $_SERVER['REMOTE_ADDR'], $user_row['role_id']]);
+
+                // Set the response content type to JSON
+                header('Content-Type: application/json');
+
+                // Return a valid JSON response
                 echo json_encode([
                     "success" => true
                 ]);
                 exit();
             }
         }
-    }
 
-    // Login failed
-    echo json_encode([
-        "success" => false
-    ]);
+        // Login failed
+        // Set the response content type to JSON
+        header('Content-Type: application/json');
+
+        echo json_encode([
+            "success" => false,
+            "message" => "Incorrect username or password."
+        ]);
+        exit();
+    } else {
+        // Invalid request method
+        // Set the response content type to JSON
+        header('Content-Type: application/json');
+
+        echo json_encode([
+            "success" => false,
+            "message" => "Invalid request method."
+        ]);
+        exit();
+    }
 } catch (PDOException $e) {
-    // Database connection error
-    die("Connection failed: " . $e->getMessage());
+    // Log the PDO error for debugging
+    error_log("PDO Error: " . $e->getMessage());
+
+    // Set the response content type to JSON
+    header('Content-Type: application/json');
+
+    // Return a valid JSON response with a 500 Internal Server Error status code
+    http_response_code(500);
+    echo json_encode([
+        "success" => false,
+        "message" => "Database connection error."
+    ]);
+    exit();
 }
 ?>
